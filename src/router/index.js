@@ -4,6 +4,7 @@ import Hello from '@/components/Hello'
 import Index from '@/components/index'
 import LoginPage from '../components/login-page'
 import Rank from '../components/song-list'
+import Play from '../components/play'
 Vue.use(Router)
 
 export default new Router({
@@ -22,6 +23,11 @@ export default new Router({
       path:'/rank',
       name:'Rank',
       component:Rank
+    },
+    {
+      path:'/play',
+      name:'Play',
+      component:Play
     }
   ]
 })

@@ -28,6 +28,17 @@ const service = {
       type: 'POST',
       data
     })
+  },
+  /**
+   * 获取歌曲信息
+   * @param data
+   */
+  getSong(data){
+    return xhr({
+      url:this.host+'/get_music',
+      type:'POST',
+      data
+    })
   }
 }
 export default service;

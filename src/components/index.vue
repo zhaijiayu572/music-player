@@ -22,7 +22,7 @@
                           {{ x.author }}
                         </el-col>
                         <el-col :span="2" class="play-btn">
-                          <i class="far fa-play-circle"></i>
+                          <i class="far fa-play-circle" @click="play(x.song_id)"></i>
                         </el-col>
                       </el-row>
                     </li>
@@ -52,7 +52,7 @@
                           {{ x.author }}
                         </el-col>
                         <el-col :span="2" class="play-btn">
-                          <i class="far fa-play-circle"></i>
+                          <i class="far fa-play-circle" @click="play(x.song_id)"></i>
                         </el-col>
                       </el-row>
                     </li>
@@ -90,16 +90,18 @@
       </el-row>
 
     </div>
-
+    <Player />
   </div>
 </template>
 <script>
 import Head from './head'
 import service from '../util/service'
+import Player from './play';
 export default {
   name:'index',
   components:{
-      Head
+    Head,
+    Player
   },
   data(){
     return {
@@ -190,6 +192,9 @@ export default {
           console.log(data);
         })
     },
+    play(musicId){
+      this.$router.push({path:'/play',query:{musicId}})
+    }
   }
 }
 </script>

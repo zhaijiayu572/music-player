@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/web-fonts-with-css/css/fontawesome-all.min.css'
 import MyLib from './util/myLib'
 import Vuex from 'vuex'
+import 'aplayer/dist/APlayer.min.css'
 MyLib.remAdjust(20,320);
 Vue.config.productionTip = false;
 Vue.use(EleUI);
