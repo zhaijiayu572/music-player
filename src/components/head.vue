@@ -3,13 +3,14 @@
     <el-row class="container">
       <el-col :span="16" class="search-container">
         <div >
-          <el-input
-            size="mini"
+          <input
             class="search-input"
             placeholder="请输入搜索内容"
-            suffix-icon="el-icon-search"
-          ></el-input>
+            @keyup.enter="search"
+            v-model="keyword"
+          >
         </div>
+        <i class="el-icon-search search-btn"></i>
       </el-col>
       <el-col :span="8" class="user">
         <div>
@@ -35,7 +36,8 @@
 export default {
   data(){
     return {
-      nickname:''
+      nickname:'',
+      keyword:'',
     }
   },
   mounted(){
@@ -50,6 +52,13 @@ export default {
       alert('aa');
       this.$store.state.isLogin = false;
       this.$store.state.userInfo = {};
+    },
+    search(){
+      if(this.keyword !== ''){
+        this.$router.push({path:'/search',query:{keyword:this.keyword}});
+      }else{
+        return false;
+      }
     }
   },
   computed:{
@@ -73,6 +82,20 @@ export default {
     position: absolute;
     top:50%;
     transform: translateY(-50%);
+    height: 1rem;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    padding: 0.2rem 0.5rem;
+    width: 100%;
+  }
+  .search-container .search-btn{
+    top:50%;
+    transform: translate(0.5rem,-50%);
+    right: 0;
+    font-size: 0.8rem;
+    position: absolute;
+    color: #666;
   }
   .user .login-btn{
     right: 0;

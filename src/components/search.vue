@@ -3,16 +3,23 @@
     <div class="head">
       <span class="back-btn" @click="goBack"><i class="el-icon-arrow-left"></i></span>
       <span class="home-btn" @click="backHome"><i class="fas fa-home"></i></span>
-      <h3 class="rank-title">{{ rankTitle }}</h3>
+      <h3 class="rank-title">搜索结果</h3>
     </div>
-    <ul class="song-list">
+    <div class="white-content" v-show="isNull">
+      <el-row>
+        <el-col :span="12" :offset="6">
+          <img src="../assets/search-fail.jpg" alt="" class="fail-pic">
+        </el-col>
+      </el-row>
+      <el-row class="tips">
+        没有找到相关搜索/(ㄒoㄒ)/~~
+      </el-row>
+    </div>
+    <ul class="song-list" v-show="!isNull">
       <li class="song-item" v-for="(x,index) in songList">
         <el-row>
           <el-col :span="2" class="song-num">{{ index+1 }}</el-col>
-          <el-col :span="6" class="song-pic">
-            <img :src="x.pic_link" alt="" class="src">
-          </el-col>
-          <el-col :span="14">
+          <el-col :span="20">
             <el-row class="song-name">
               {{ x.music_title }}
             </el-row>
@@ -29,48 +36,42 @@
   </div>
 </template>
 <script>
-  import service from '../util/service'
+  import service from '../util/service';
   export default {
     mounted(){
-      let type = this.$route.query.type;
-      let title = this.$route.query.keyword;
-      if(!type){
+      let keyword = this.$route.query.keyword;
+      if(!keyword){
         this.$router.push({path:'/'});
-      }else{
-        this.type = type;
-        this.rankTitle = title;
       }
-      this.initList();
+      this.keyword = keyword;
+      this.initSearchResult();
     },
     data(){
       return {
         songList:[],
-        type:1,
-        rankTitle:'',
+        keyword:'',
+        isNull:false,
       }
     },
     methods:{
-      initList(){
-        let data = {
-          type:this.type,
-          size:50,
-          offset:0
-        };
-        service.getSongList(data)
-          .then((data)=>{
-            data = JSON.parse(data);
-            this.songList = data;
-          },(err)=>{
-            if(err){
-              this.$message('服务器错误');
-            }
-          })
-      },
       goBack(){
         this.$router.go(-1);
       },
       backHome(){
         this.$router.push({path:'/'});
+      },
+      initSearchResult(){
+        let data = {
+          keyword:this.keyword
+        };
+        service.searchSong(data)
+          .then((data)=>{
+            data = JSON.parse(data);
+            this.songList = data.result;
+            if(this.songList.length === 0){
+              this.isNull = true;
+            }
+          })
       },
       play(musicId){
         if(this.$store.state.playList.indexOf(musicId) !== -1){
@@ -169,5 +170,16 @@
     font-size: 1.5rem;
     color: #606266;
     line-height: 2.5rem;
+  }
+  .white-content{
+    padding-top: 2rem;
+  }
+  .white-content .fail-pic{
+    width: 100%;
+  }
+  .white-content .tips{
+    padding-top: 1rem;
+    text-align: center;
+    color: #606266;
   }
 </style>

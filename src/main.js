@@ -17,13 +17,15 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     userInfo: {},
-    isLogin: false
+    isLogin: false,
+    playList:[],
+    playerShow:true,   //是否显示播放器
   }
-})
+});
 new Vue({
   el: '#app',
   router,
   store,
   template: '<App/>',
   components: { App }
-})
+});

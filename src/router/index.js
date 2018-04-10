@@ -4,8 +4,8 @@ import Hello from '@/components/Hello'
 import Index from '@/components/index'
 import LoginPage from '../components/login-page'
 import Rank from '../components/song-list'
-import Play from '../components/play'
-Vue.use(Router)
+import Search from '../components/search'
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -25,9 +25,9 @@ export default new Router({
       component:Rank
     },
     {
-      path:'/play',
-      name:'Play',
-      component:Play
+      path:'/search',
+      name:'Search',
+      component:Search
     }
   ]
 })

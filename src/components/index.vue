@@ -90,18 +90,15 @@
       </el-row>
 
     </div>
-    <Player />
   </div>
 </template>
 <script>
 import Head from './head'
 import service from '../util/service'
-import Player from './play';
 export default {
   name:'index',
   components:{
     Head,
-    Player
   },
   data(){
     return {
@@ -159,6 +156,7 @@ export default {
     // }
   },
   mounted(){
+    this.$store.state.playerShow = true;
     this.getNewList();
     this.getHotList();
   },
@@ -193,7 +191,27 @@ export default {
         })
     },
     play(musicId){
-      this.$router.push({path:'/play',query:{musicId}})
+      if(this.$store.state.playList.indexOf(musicId) !== -1){
+        return false;
+      }
+      let data = {
+        song_id:musicId
+      };
+      service.getSong(data)
+        .then((data)=>{
+          data = JSON.parse(data);
+          let songInfo = {
+            name:data.result.music_title,
+            artist:data.result.author,
+            url:data.result.file_link,
+            cover:data.result.pic_link,
+            lrc:data.result.lrc_link
+          };
+          this.$store.state.ap.list.add(songInfo);
+          this.$store.state.ap.list.switch(this.$store.state.playList.length);
+          this.$store.state.ap.play();
+          this.$store.state.playList.push(musicId);
+        })
     }
   }
 }

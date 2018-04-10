@@ -1,6 +1,6 @@
 import xhr from './xhr'
 const service = {
-  host:'http://localhost:3001/player',
+  host:'http://192.168.0.101:3001/player',
   login(data){
     return xhr({
       url:this.host+'/login',
@@ -39,6 +39,13 @@ const service = {
       type:'POST',
       data
     })
+  },
+  searchSong(data){
+    return xhr({
+      url:this.host+'/search_music',
+      type:'POST',
+      data
+    })
   }
-}
+};
 export default service;

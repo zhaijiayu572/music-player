@@ -1,21 +1,27 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <div id="player"></div>
+    <Player v-show="playerShow"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import Index from './components/index'
-
+import Player from './components/play'
 export default {
   name: 'app',
   mounted(){
 
   },
   components:{
-    Index
+    Index,
+    Player
+  },
+  computed:{
+    playerShow(){
+      return this.$store.state.playerShow;
+    }
   }
 }
 </script>

@@ -23,6 +23,9 @@ export default {
       Login,
       Register
   },
+  mounted(){
+    this.$store.state.playerShow = false;
+  },
   data(){
       return {
         activeName:'login'
