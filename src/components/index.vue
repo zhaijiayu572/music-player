@@ -205,12 +205,14 @@ export default {
             artist:data.result.author,
             url:data.result.file_link,
             cover:data.result.pic_link,
-            lrc:data.result.lrc_link
+            lrc:data.result.lrc_link,
+            id:musicId
           };
-          this.$store.state.ap.list.add(songInfo);
-          this.$store.state.ap.list.switch(this.$store.state.playList.length);
-          this.$store.state.ap.play();
           this.$store.state.playList.push(musicId);
+          this.$store.state.ap.list.add(songInfo);
+          this.$store.state.ap.list.switch(this.$store.state.playList.length-1);
+          this.$store.state.ap.play();
+          this.$store.state.playNow = musicId;
         })
     }
   }

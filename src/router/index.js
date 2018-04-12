@@ -5,6 +5,7 @@ import Index from '@/components/index'
 import LoginPage from '../components/login-page'
 import Rank from '../components/song-list'
 import Search from '../components/search'
+import Comment from '../components/comment'
 Vue.use(Router);
 
 export default new Router({
@@ -28,6 +29,11 @@ export default new Router({
       path:'/search',
       name:'Search',
       component:Search
+    },
+    {
+      path:'/comment',
+      name:'Comment',
+      component:Comment
     }
   ]
 })

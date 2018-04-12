@@ -18,4 +18,15 @@ exports.addComment = (commentItem,callback) => {
             callback(result,err);
         })
     })
-}
+};
+exports.getComments = (songId,callback) => {
+  connect((db)=>{
+    let comment = db.collection('comment');
+    comment.find({"songId":songId}).toArray((err,result)=>{
+      if(err){
+        console.log('aa');
+      }
+      callback(result,err);
+    })
+  })
+};

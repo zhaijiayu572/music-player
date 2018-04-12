@@ -1,10 +1,11 @@
 <template>
   <div class="container">
-    <div class="head">
-      <span class="back-btn" @click="goBack"><i class="el-icon-arrow-left"></i></span>
-      <span class="home-btn" @click="backHome"><i class="fas fa-home"></i></span>
-      <h3 class="rank-title">搜索结果</h3>
-    </div>
+    <!--<div class="head">-->
+      <!--<span class="back-btn" @click="goBack"><i class="el-icon-arrow-left"></i></span>-->
+      <!--<span class="home-btn" @click="backHome"><i class="fas fa-home"></i></span>-->
+      <!--<h3 class="rank-title">搜索结果</h3>-->
+    <!--</div>-->
+    <ComHead title="搜索结果"></ComHead>
     <div class="white-content" v-show="isNull">
       <el-row>
         <el-col :span="12" :offset="6">
@@ -37,7 +38,11 @@
 </template>
 <script>
   import service from '../util/service';
+  import ComHead from './common-head'
   export default {
+    components:{
+      ComHead
+    },
     mounted(){
       let keyword = this.$route.query.keyword;
       if(!keyword){
@@ -54,12 +59,6 @@
       }
     },
     methods:{
-      goBack(){
-        this.$router.go(-1);
-      },
-      backHome(){
-        this.$router.push({path:'/'});
-      },
       initSearchResult(){
         let data = {
           keyword:this.keyword
@@ -67,8 +66,17 @@
         service.searchSong(data)
           .then((data)=>{
             data = JSON.parse(data);
+            if(data.status_code === '4001' || data.status_code === '4003'){
+              this.isNull = true;
+              return false;
+            }
             this.songList = data.result;
             if(this.songList.length === 0){
+              this.isNull = true;
+            }
+          },(err)=>{
+            if(err){
+              this.$message('服务器异常');
               this.isNull = true;
             }
           })
@@ -102,31 +110,6 @@
 <style scoped>
   .container{
     padding-bottom: 5rem;
-  }
-  .head{
-    height: 2.5rem;
-    padding: 0 0.5rem;
-    background: #409EFF;
-  }
-  .head i{
-    font-size: 1.25rem;
-    color: #fff;
-    line-height: 2.5rem;
-  }
-  .head .back-btn{
-    float: left;
-  }
-  .head .home-btn{
-    float: right;
-  }
-  .rank-title{
-    margin: 0;
-    font-weight: normal;
-    font-size: 1rem;
-    height: 100%;
-    line-height: 2.5rem;
-    color: #fff;
-    text-align: center;
   }
   .song-list{
     padding: 0 0.5rem;

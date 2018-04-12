@@ -20,6 +20,7 @@ const store = new Vuex.Store({
     isLogin: false,
     playList:[],
     playerShow:true,   //是否显示播放器
+    playNow:{},        //现在正播放的音乐
   }
 });
 new Vue({

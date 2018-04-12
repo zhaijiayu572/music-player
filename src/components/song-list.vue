@@ -1,10 +1,6 @@
 <template>
   <div class="container">
-    <div class="head">
-      <span class="back-btn" @click="goBack"><i class="el-icon-arrow-left"></i></span>
-      <span class="home-btn" @click="backHome"><i class="fas fa-home"></i></span>
-      <h3 class="rank-title">{{ rankTitle }}</h3>
-    </div>
+    <ComHead :title="rankTitle"></ComHead>
     <ul class="song-list">
       <li class="song-item" v-for="(x,index) in songList">
         <el-row>
@@ -30,7 +26,11 @@
 </template>
 <script>
   import service from '../util/service'
+  import ComHead from './common-head'
   export default {
+    components:{
+      ComHead
+    },
     mounted(){
       let type = this.$route.query.type;
       let title = this.$route.query.keyword;
@@ -66,12 +66,6 @@
             }
           })
       },
-      goBack(){
-        this.$router.go(-1);
-      },
-      backHome(){
-        this.$router.push({path:'/'});
-      },
       play(musicId){
         if(this.$store.state.playList.indexOf(musicId) !== -1){
           return false;
@@ -89,10 +83,11 @@
               cover:data.result.pic_link,
               lrc:data.result.lrc_link
             };
-            this.$store.state.ap.list.add(songInfo);
-            this.$store.state.ap.list.switch(this.$store.state.playList.length);
-            this.$store.state.ap.play();
             this.$store.state.playList.push(musicId);
+            this.$store.state.playNow = musicId;
+            this.$store.state.ap.list.add(songInfo);
+            this.$store.state.ap.list.switch(this.$store.state.playList.length-1);
+            this.$store.state.ap.play();
           })
       }
     }
@@ -101,31 +96,6 @@
 <style scoped>
   .container{
     padding-bottom: 5rem;
-  }
-  .head{
-    height: 2.5rem;
-    padding: 0 0.5rem;
-    background: #409EFF;
-  }
-  .head i{
-    font-size: 1.25rem;
-    color: #fff;
-    line-height: 2.5rem;
-  }
-  .head .back-btn{
-    float: left;
-  }
-  .head .home-btn{
-    float: right;
-  }
-  .rank-title{
-    margin: 0;
-    font-weight: normal;
-    font-size: 1rem;
-    height: 100%;
-    line-height: 2.5rem;
-    color: #fff;
-    text-align: center;
   }
   .song-list{
     padding: 0 0.5rem;

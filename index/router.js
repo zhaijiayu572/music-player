@@ -15,4 +15,5 @@ router.all('/player/collect_music',user.collectMusic);
 router.all('/player/update_info',user.updateUserInfo);
 router.all('/player/test',user.test);
 router.all('/player/add_comment',comment.addComment);
+router.all('/player/get_comments',comment.getComments);
 module.exports = router;

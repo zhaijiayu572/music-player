@@ -2,6 +2,7 @@ let comment_model = require('../model/comment_model');
 let util = require('../util');
 let comment = {
     addComment(req,res,next){
+        util.setCORS(res);
         let commentItem = {};
         if(req.body.songId){
             commentItem.songId = req.body.songId;
@@ -31,6 +32,20 @@ let comment = {
                 }
             })
         }
-    }
+    },
+  getComments(req,res,next){
+      util.setCORS(res);
+      let songId = req.body.songId;
+      if(!songId){
+        res.send(util.errHandler('参数为空'));
+      }
+      comment_model.getComments(songId,(rs,err)=>{
+        if(err){
+          res.send(util.errHandler('服务器错误'));
+        }else{
+          util.successHandler(res,rs)
+        }
+      })
+  }
 }
 module.exports = comment;
