@@ -8,7 +8,7 @@ function connect(callback){
         }else{
             callback(db);
         }
-        
+
     });
 }
 
@@ -47,25 +47,38 @@ exports.login = (nickname,callback)=>{
                 callback(rs);
             })
     })
-}
-exports.collectMusic = (musicInfo,id,callback)=>{
+};
+exports.collectMusic = (musicId,id,callback)=>{
     connect(db=>{
         id = ObjectId(id);
         let user = db.collection('user');
         user.find({_id:id}).toArray((err,rs)=>{
-            console.log(rs)
             let music_collections = [];
             if(rs[0].music_collection){
-                let music_collections = rs[0].music_collection;
+               music_collections = rs[0].music_collection;
             }
-            music_collections.push(musicInfo);
+            music_collections.push(musicId);
             user.update({_id:id},{$set:{"music_collection":music_collections}},(err,update_result)=>{
-                callback(update_result);
+                callback(update_result,music_collections);
                 db.close();
             })
         })
     })
-}
+};
+exports.getMyMusic = (id,callback)=>{
+  connect(db=>{
+    id = ObjectId(id);
+    let user = db.collection('user');
+    user.find({_id:id}).toArray((err,rs)=>{
+      let music_collections = [];
+      if(rs[0].music_collection){
+        music_collections = rs[0].music_collection;
+      }
+      callback(music_collections);
+      db.close();
+    })
+  })
+};
 /**
  * 更新用户信息
  * @param {ObjectId} id 用户的ID

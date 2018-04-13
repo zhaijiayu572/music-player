@@ -2,7 +2,7 @@
   <div class="register-page">
     <ul class="register-body">
       <li>
-        <el-input 
+        <el-input
           type="text"
           placeholder="请输入用户名"
           v-model="nickname"
@@ -18,7 +18,7 @@
         </el-alert>
       </li>
       <li>
-        <el-input 
+        <el-input
           type="number"
           placeholder="请输入年龄"
           v-model="age"
@@ -113,8 +113,12 @@ export default {
             this.$store.state.userInfo = data.result.user_info;
             this.$store.state.isLogin = true;
             this.$message('注册成功！');
-            let url = this.returnUrl ? this.returnUrl : '/';
-            this.$router.push({path:url});
+            // 登录完成后如果之前正在播放音乐则从头开始
+            if(this.$store.state.playNow >= 0){
+              console.log(this.$store.state.userInfo.music_collection);
+              this.$store.state.ap.list.switch(0);
+            }
+            this.$router.go(-1);
           }else{
             this.$message('注册失败！');
           }

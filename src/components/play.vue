@@ -2,8 +2,11 @@
   <div class="container">
     <div id="player"></div>
     <ul class="extra-panel" :style="panelStyle">
-      <li @click="collect"><i class="far fa-heart"></i></li>
-      <li><i class="far fa-comment"></i></li>
+      <li @click="collect">
+        <i class="fas fa-heart" v-show="collected"></i>
+        <i class="far fa-heart" v-show="!collected"></i>
+      </li>
+      <li @click="comment"><i class="far fa-comment"></i></li>
     </ul>
   </div>
 </template>
@@ -73,6 +76,16 @@
       });
       this.ap.on('listswitch',(data)=>{
         this.$store.state.playNow = this.$store.state.playList[data.index];
+        if(this.$store.state.isLogin){
+          let myCollection = this.$store.state.userInfo.music_collection;
+          this.collected = false;
+          for(let i=0;i<myCollection.length;i++){
+            if(this.$store.state.playList[data.index] == myCollection[i]){
+              this.collected = true
+            }
+          }
+        }
+        console.log(this.collected);
       });
       this.$store.state.ap = ap;
     },
@@ -81,16 +94,40 @@
         ap:null,
         panelStyle:{
           bottom:'1.2rem'
-        }
+        },
+        collected:false,
       }
     },
     methods:{
       collect(){
-        service.getSong({song_id:this.$store.state.playNow})
+        if(!this.$store.state.isLogin){
+          // 跳转登录时让音乐暂停
+          this.$store.state.ap.pause();
+          this.$router.push('login');
+          return false;
+        }
+        if(this.collected){
+          return false;
+        }
+        let songId = this.$store.state.playNow;
+        let reqObj = {
+          songId,
+          id:this.$store.state.userInfo.id,
+        };
+        service.collectMusic(reqObj)
           .then((data)=>{
             data = JSON.parse(data);
-            console.log(data);
+            if(data.result.success){
+              this.$store.state.userInfo.music_collection = data.result.music_collection;
+              this.collected = true;
+            }else{
+              this.$message('收藏音乐失败！');
+              return false;
+            }
           })
+      },
+      comment(){
+        this.$router.push({path:'comment',query:{songId:this.$store.state.playNow}});
       }
     }
   }

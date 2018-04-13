@@ -34,6 +34,7 @@ export default {
     mounted(){
         let returnUrl = this.$route.query.returnUrl;
         this.returnUrl = returnUrl ? decodeURIComponent(returnUrl) : '';
+        console.log(this.returnUrl);
         if(this.$store.state.isLogin){
             let url = this.returnUrl ? this.returnUrl : '/';
             this.$router.push({path:url});
@@ -63,10 +64,15 @@ export default {
                 // console.log(JSON.parse(data));
                 data = JSON.parse(data);
                 if(data.result.success){
-                    let url = this.returnUrl ? this.returnUrl : '/';
+                    // let url = this.returnUrl ? this.returnUrl : '/';
                     this.$store.state.userInfo = data.result.user_data;
                     this.$store.state.isLogin = true;
-                    this.$router.push({path:url});
+                    // 登录完成后如果之前正在播放音乐则从头开始
+                    if(this.$store.state.playNow >= 0){
+                      console.log(this.$store.state.userInfo.music_collection);
+                      this.$store.state.ap.list.switch(0);
+                    }
+                    this.$router.go(-1);
                 }else{
                     this.$message(data.result.err);
                     this.username = '';

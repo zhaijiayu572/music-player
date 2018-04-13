@@ -153,12 +153,20 @@
 {
 	status_code:'',string  //success 2000,fail 4003
 	result:{
-		success:true    boolean
+		success:true,    boolean
+		user_data:{
+        id:rs[0]._id,
+        nickname:rs[0].nickname,
+        age:rs[0].age,
+        sex:rs[0].sex,
+        music_collection:rs[0].music_collection
+		}
 	}
 }
 ```
 ## 更新用户信息
 > ### url: /player/update_info
+
 ```
 {
 	status_code:'', string //success 2000,fail 4003
@@ -167,4 +175,52 @@
 		err:'',  //错误信息
 	}
 }
-```1a
+```
+## 收藏音乐
+> ### url: /player/collect_music
+
+#### musicId (音乐id)
+#### id (用户id)
+```
+{
+	status_code:'', string //success 2000,fail 4003
+	result:{
+		success:false,true,
+		music_collection:[] //更新后的收藏列表
+	}
+}
+```
+
+# 评论
+## 添加用户评论
+> ### url: /palyer/add_comment
+
+### 请求参数
+#### songId (歌曲ID)
+#### username (用户名称)
+#### comment (评论内容)
+```
+{
+	status_code:'', string //success 2000,fail 4003
+	result:{
+		success:true   //成功为true，失败有err没有success子弹
+	}
+}
+```
+
+## 获取用户评论
+> ### url: /palyer/get_comments
+
+### 请求参数
+#### songId (歌曲ID)
+```
+{
+	status_code:'', string //success 2000,fail 4003
+	result:{
+		songId:'',
+		username:'',
+		comment:''
+	}
+
+}
+```

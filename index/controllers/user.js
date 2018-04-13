@@ -57,7 +57,7 @@ let user = {
         }else{
             util.errHandler('parms err');
         }
-        
+
     },
     login(req,res,next){
         util.setCORS(res);
@@ -74,7 +74,7 @@ let user = {
                             sex:rs[0].sex,
                             music_collection:rs[0].music_collection
                         }
-                    })
+                    });
                 }else{
                     util.successHandler(res,{
                         success:false,
@@ -89,28 +89,34 @@ let user = {
     },
     collectMusic(req,res,next){
         util.setCORS(res);
-        let music_id = req.body.music_id;
-        let music_title = req.body.music_title;
-        let author = req.body.author;
+        let music_id = req.body.songId;
         let id = req.body.id;
-        if(music_id && music_title && author){
-            user_model.collectMusic({
-                music_id,
-                music_title,
-                author
-            },id,(rs)=>{
+        if(music_id){
+            user_model.collectMusic(music_id,id,(rs,music_collection)=>{
                 if(rs.result.ok){
-                    successHandler(res,{
-                        success:true
+                    util.successHandler(res,{
+                        success:true,
+                        music_collection:music_collection
                     })
                 }else{
-                    successHandler(res,{
+                    util.successHandler(res,{
                         success:false
                     })
                 }
             })
         }else{
             res.send(util.errHandler('params err'));
+        }
+    },
+    getMyMusic(req,res,next){
+        util.setCORS(res);
+        let id = req.query.id;
+        if(id){
+          user_model.getMyMusic(id,(myList)=>{
+            util.successHandler(res,myList);
+          });
+        }else{
+          res.send(util.errHandler('参数名不能为空'));
         }
     },
     updateUserInfo(req,res,next){

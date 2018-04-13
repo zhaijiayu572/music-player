@@ -53,6 +53,27 @@ const service = {
       type:'POST',
       data
     })
+  },
+  addComment(data){
+    return xhr({
+      url:this.host+'/add_comment',
+      type:'POST',
+      data
+    })
+  },
+  collectMusic(data){
+    return xhr({
+      url:this.host+'/collect_music',
+      type:'POST',
+      data
+    })
+  },
+  getMyMusic(data){
+    return xhr({
+      url:this.host+'/get_my_music',
+      type:'POST',
+      data
+    })
   }
 };
 export default service;

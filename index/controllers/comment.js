@@ -25,7 +25,7 @@ let comment = {
                 }
                 if(rs.result.ok){
                     util.successHandler(res,{
-                        result:'添加评论成功'
+                        success:true,
                     });
                 }else{
                     res.send(util.errHandler('服务器错误'));

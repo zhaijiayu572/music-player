@@ -12,6 +12,7 @@ router.all('/player/check_nickname',user.checkNickName);
 router.all('/player/insert_user',user.insertUser);
 router.all('/player/login',user.login);
 router.all('/player/collect_music',user.collectMusic);
+router.all('/player/get_my_music',user.getMyMusic);
 router.all('/player/update_info',user.updateUserInfo);
 router.all('/player/test',user.test);
 router.all('/player/add_comment',comment.addComment);

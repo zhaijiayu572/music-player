@@ -49,7 +49,6 @@ export default {
       this.$router.push({ path: '/login', query: { returnUrl: returnUrl }})
     },
     logout(){
-      alert('aa');
       this.$store.state.isLogin = false;
       this.$store.state.userInfo = {};
     },
