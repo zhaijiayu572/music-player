@@ -6,6 +6,9 @@ let returnObj = {          //返回对象模板
     result:{}
 };
 let index = {
+  /*
+  * 获取首页数据接口
+  * */
     initIndex(req,res,next){
         util.setCORS(res);
         let type = req.body.type;
@@ -39,7 +42,7 @@ let index = {
         }else{
             res.send(util.errHandler('params is fail'));
         }
-       
+
     },
     getMusic(req,res,next){
         util.setCORS(res);

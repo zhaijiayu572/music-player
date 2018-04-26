@@ -32,10 +32,10 @@ let user = {
         util.setCORS(res);
         let params = {
             nickname:req.body.nickname,
-            age:req.body.age,
+            password:req.body.password,
             sex:req.body.sex
         };
-        if(params.nickname && params.age && params.sex){
+        if(params.nickname && params.password && params.sex){
             user_model.insertUser(params, (rs) => {
                 if (rs.result.ok) {
                     util.successHandler(res,{
@@ -62,8 +62,9 @@ let user = {
     login(req,res,next){
         util.setCORS(res);
         let nickname = req.body.nickname;
+        let password = req.body.password;
         if(nickname){
-            user_model.login(nickname,(rs)=>{
+            user_model.login(nickname,password,(rs)=>{
                 if(rs.length){
                     util.successHandler(res,{
                         success:true,
@@ -89,10 +90,18 @@ let user = {
     },
     collectMusic(req,res,next){
         util.setCORS(res);
-        let music_id = req.body.songId;
+        let songInfo = {
+          name:req.body.name,
+          artist:req.body.artist,
+          url:req.body.url,
+          cover:req.body.cover,
+          lrc:req.body.lrc,
+          songId:req.body.songId
+        };
+        console.log(songInfo);
         let id = req.body.id;
-        if(music_id){
-            user_model.collectMusic(music_id,id,(rs,music_collection)=>{
+        if(songInfo){
+            user_model.collectMusic(songInfo,id,(rs,music_collection)=>{
                 if(rs.result.ok){
                     util.successHandler(res,{
                         success:true,

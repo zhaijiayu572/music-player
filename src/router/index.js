@@ -6,6 +6,7 @@ import LoginPage from '../components/login-page'
 import Rank from '../components/song-list'
 import Search from '../components/search'
 import Comment from '../components/comment'
+import Collection from '../components/collection'
 Vue.use(Router);
 
 export default new Router({
@@ -34,6 +35,11 @@ export default new Router({
       path:'/comment',
       name:'Comment',
       component:Comment
+    },
+    {
+      path:'/collection',
+      name:'Collection',
+      component:Collection
     }
   ]
 })

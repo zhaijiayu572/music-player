@@ -21,7 +21,7 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item><div @click="logout">登出</div></el-dropdown-item>
-              <el-dropdown-item><div>个人中心</div></el-dropdown-item>
+              <el-dropdown-item><div @click="showMyCollection">我的收藏</div></el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
           <el-button v-else="" @click="login" class="login-btn" size="mini">登录</el-button>
@@ -58,6 +58,9 @@ export default {
       }else{
         return false;
       }
+    },
+    showMyCollection(){
+      this.$router.push({path:'/collection'});
     }
   },
   computed:{

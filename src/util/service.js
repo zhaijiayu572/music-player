@@ -1,6 +1,6 @@
 import xhr from './xhr'
 const service = {
-  host:'http://localhost:3001/player',
+  host:'http://192.168.0.102:3001/player',
   login(data){
     return xhr({
       url:this.host+'/login',

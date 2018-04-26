@@ -1,31 +1,19 @@
 <template>
   <div class="container">
-    <!--<div class="head">-->
-      <!--<span class="back-btn" @click="goBack"><i class="el-icon-arrow-left"></i></span>-->
-      <!--<span class="home-btn" @click="backHome"><i class="fas fa-home"></i></span>-->
-      <!--<h3 class="rank-title">搜索结果</h3>-->
-    <!--</div>-->
-    <ComHead title="搜索结果"></ComHead>
-    <div class="white-content" v-show="isNull">
-      <el-row>
-        <el-col :span="12" :offset="6">
-          <img src="../assets/search-fail.jpg" alt="" class="fail-pic">
-        </el-col>
-      </el-row>
-      <el-row class="tips">
-        没有找到相关搜索/(ㄒoㄒ)/~~
-      </el-row>
-    </div>
-    <ul class="song-list" v-show="!isNull">
-      <li class="song-item" v-for="(x,index) in songList">
+    <ComHead />
+    <ul class="song-list">
+      <li class="song-item" v-for="(x,index) in collection">
         <el-row>
           <el-col :span="2" class="song-num">{{ index+1 }}</el-col>
-          <el-col :span="20">
+          <el-col :span="6" class="song-pic">
+            <img :src="x.cover" alt="" class="src">
+          </el-col>
+          <el-col :span="14">
             <el-row class="song-name">
-              {{ x.music_title }}
+              {{ x.name }}
             </el-row>
             <el-row class="song-author">
-              {{ x.author }}
+              {{ x.artist}}
             </el-row>
           </el-col>
           <el-col :span="2" class="play-btn">
@@ -37,50 +25,25 @@
   </div>
 </template>
 <script>
-  import service from '../util/service';
   import ComHead from './common-head'
+  import service from '../util/service'
   export default {
+    mounted(){
+      if(this.$store.state.userInfo.music_collection){
+        this.collection = this.$store.state.userInfo.music_collection;
+      }else{
+        this.$router.push({path:'/'});
+      }
+    },
     components:{
       ComHead
     },
-    mounted(){
-      let keyword = this.$route.query.keyword;
-      if(!keyword){
-        this.$router.push({path:'/'});
-      }
-      this.keyword = keyword;
-      this.initSearchResult();
-    },
     data(){
       return {
-        songList:[],
-        keyword:'',
-        isNull:false,
+        collection:[]
       }
     },
     methods:{
-      initSearchResult(){
-        let data = {
-          keyword:this.keyword
-        };
-        service.searchSong(data)
-          .then((data)=>{
-            data = JSON.parse(data);
-            if(data.status_code === '4001' || data.status_code === '4003'){
-              this.isNull = true;
-              return false;
-            }
-            this.songList = data.result;
-            if(this.songList.length === 0){
-              this.isNull = true;
-            }
-          },(err)=>{
-            if(err){
-              this.$message('服务器异常');
-              this.isNull = true;
-            }
-          })
-      },
       play(musicId){
         for(let i=0;i<this.$store.state.playList.length;i++){
           if(this.$store.state.playList[i].songId == musicId){
@@ -112,12 +75,6 @@
   }
 </script>
 <style scoped>
-  .container{
-    padding-bottom: 5rem;
-  }
-  .song-list{
-    padding: 0 0.5rem;
-  }
   .song-list{
     list-style: none;
     margin: 0;
@@ -157,16 +114,5 @@
     font-size: 1.5rem;
     color: #606266;
     line-height: 2.5rem;
-  }
-  .white-content{
-    padding-top: 2rem;
-  }
-  .white-content .fail-pic{
-    width: 100%;
-  }
-  .white-content .tips{
-    padding-top: 1rem;
-    text-align: center;
-    color: #606266;
   }
 </style>

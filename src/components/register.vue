@@ -19,9 +19,9 @@
       </li>
       <li>
         <el-input
-          type="number"
-          placeholder="请输入年龄"
-          v-model="age"
+          type="password"
+          placeholder="请输入密码"
+          v-model="password"
         />
       </li>
       <li>
@@ -44,7 +44,7 @@ export default {
     return {
       nickname:'',
       sex:'',
-      age:'',
+      password:'',
       isExit:false,
       alertMsg:''
     }
@@ -61,7 +61,7 @@ export default {
     reset(){
       this.nickname = '';
       this.sex = '';
-      this.age = '';
+      this.password = '';
     },
     checkNickname(){
       if(this.nickname === ''){
@@ -86,7 +86,7 @@ export default {
           })
     },
     checkUserInfo(){
-      if(this.nickname && this.sex && this.age){
+      if(this.nickname && this.sex && this.password){
         if(this.nickname.match(/^<script>|<\/script>$|[&,#]/g)){
           this.$message("输入的内容不合法");
           return false;
@@ -104,13 +104,13 @@ export default {
       }
       service.register({
         nickname:this.nickname,
-        age:parseInt(this.age),
+        password:this.password,
         sex:this.sex
       }).then((data) => {
         data = JSON.parse(data);
         if(data.status_code === '2000'){
           if(data.result.success){
-            this.$store.state.userInfo = data.result.user_info;
+            this.$store.state.userInfo = data.result.user_data;
             this.$store.state.isLogin = true;
             this.$message('注册成功！');
             // 登录完成后如果之前正在播放音乐则从头开始

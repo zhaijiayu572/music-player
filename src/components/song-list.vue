@@ -67,8 +67,10 @@
           })
       },
       play(musicId){
-        if(this.$store.state.playList.indexOf(musicId) !== -1){
-          return false;
+        for(let i=0;i<this.$store.state.playList.length;i++){
+          if(this.$store.state.playList[i].songId == musicId){
+            return false
+          }
         }
         let data = {
           song_id:musicId
@@ -81,13 +83,14 @@
               artist:data.result.author,
               url:data.result.file_link,
               cover:data.result.pic_link,
-              lrc:data.result.lrc_link
+              lrc:data.result.lrc_link,
+              songId:musicId
             };
-            this.$store.state.playList.push(musicId);
-            this.$store.state.playNow = musicId;
+            this.$store.state.playList.push(songInfo);
             this.$store.state.ap.list.add(songInfo);
             this.$store.state.ap.list.switch(this.$store.state.playList.length-1);
             this.$store.state.ap.play();
+            this.$store.state.playNow = songInfo;
           })
       }
     }

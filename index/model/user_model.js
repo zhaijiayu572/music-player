@@ -27,7 +27,7 @@ exports.insertUser = (params,callback)=>{
         let user = db.collection('user');
         user.insert({
             "nickname":params.nickname,
-            "age":params.age,
+            "password":params.password,
             "sex":params.sex,
             "music_collection":[]
         },(err,result)=>{
@@ -37,9 +37,9 @@ exports.insertUser = (params,callback)=>{
         })
     })
 }
-exports.login = (nickname,callback)=>{
+exports.login = (nickname,password,callback)=>{
     connect(db=>{
-        db.collection('user').find({"nickname":nickname})
+        db.collection('user').find({"nickname":nickname,"password":password})
             .toArray((err,rs)=>{
                 if(err){
                     console.log(err);
@@ -48,7 +48,7 @@ exports.login = (nickname,callback)=>{
             })
     })
 };
-exports.collectMusic = (musicId,id,callback)=>{
+exports.collectMusic = (songInfo,id,callback)=>{
     connect(db=>{
         id = ObjectId(id);
         let user = db.collection('user');
@@ -57,7 +57,7 @@ exports.collectMusic = (musicId,id,callback)=>{
             if(rs[0].music_collection){
                music_collections = rs[0].music_collection;
             }
-            music_collections.push(musicId);
+            music_collections.push(songInfo);
             user.update({_id:id},{$set:{"music_collection":music_collections}},(err,update_result)=>{
                 callback(update_result,music_collections);
                 db.close();

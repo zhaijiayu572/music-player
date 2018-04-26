@@ -80,7 +80,7 @@
           let myCollection = this.$store.state.userInfo.music_collection;
           this.collected = false;
           for(let i=0;i<myCollection.length;i++){
-            if(this.$store.state.playList[data.index] == myCollection[i]){
+            if(this.$store.state.playList[data.index].songId == myCollection[i].songId){
               this.collected = true
             }
           }
@@ -100,6 +100,9 @@
     },
     methods:{
       collect(){
+        if(!this.$store.state.playNow){
+          return false;
+        }
         if(!this.$store.state.isLogin){
           // 跳转登录时让音乐暂停
           this.$store.state.ap.pause();
@@ -109,9 +112,9 @@
         if(this.collected){
           return false;
         }
-        let songId = this.$store.state.playNow;
+        let songInfo = this.$store.state.playNow;
         let reqObj = {
-          songId,
+          ...songInfo,
           id:this.$store.state.userInfo.id,
         };
         service.collectMusic(reqObj)
@@ -127,7 +130,10 @@
           })
       },
       comment(){
-        this.$router.push({path:'comment',query:{songId:this.$store.state.playNow}});
+        if(!this.$store.state.playNow){
+          return false;
+        }
+        this.$router.push({path:'comment',query:{songId:this.$store.state.playNow.songId}});
       }
     }
   }

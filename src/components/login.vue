@@ -7,6 +7,13 @@
                     size='medium'
                     v-model="username">
                 </el-input>
+                <el-input
+                  class="pwd"
+                  type="password"
+                  placeholder="请输入密码"
+                  size='medium'
+                  v-model="password">
+                </el-input>
             </div>
             <div class="login-foot">
                 <button class="login-btn btn" @click="login">登录</button>
@@ -43,13 +50,14 @@ export default {
     methods:{
         reset(){
             this.username = '';
+            this.password = '';
         },
         checkUserName(){
-            if(this.username === ''){
+            if(this.username === ''|| this.password === ''){
                 this.$message('输入内容不能为空');
                 return false;
             }
-            if(this.username.match(/^<script>|<\/script>$/g)){
+            if(this.username.match(/^<script>|<\/script>$/g) || this.password.match(/^<script>|<\/script>$/g)){
                 this.$message('输入的内容不合法');
                 return false;
             }
@@ -60,7 +68,8 @@ export default {
                 return false;
             }
             let nickname = this.username;
-            service.login({nickname}).then((data)=>{
+            let password = this.password;
+            service.login({nickname,password}).then((data)=>{
                 // console.log(JSON.parse(data));
                 data = JSON.parse(data);
                 if(data.result.success){
@@ -123,5 +132,8 @@ export default {
     .login-foot .login-btn{
         background: #67C23A;
     }
+  .pwd{
+    margin-top: 0.3rem;
+  }
 </style>
 

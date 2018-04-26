@@ -16,7 +16,7 @@
         </el-card>
       </li>
     </ul>
-    <div class="white-space">
+    <div class="white-space" v-show="isNull">
       <el-row>
         <el-col :span="8" :offset="8">
           <img src="../assets/comment-null.jpg" alt="" class="src">
