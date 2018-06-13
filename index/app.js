@@ -1,8 +1,10 @@
 let express = require('express');
 let app = express();
 let router = require('./router');
+const path = require('path');
 let bodyParser = require('body-parser');
 let cors = require('cors');
+app.use(express.static(path.join(__dirname, 'dist')));
 app.use(bodyParser.json({ limit: '1mb' }));  //body-parser 解析json格式数据
 app.use(bodyParser.urlencoded({            //此项必须在 bodyParser.json 下面,为参数编码
     extended: false
